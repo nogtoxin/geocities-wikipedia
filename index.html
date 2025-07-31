@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Welcome to My Rad GeoCities Wiki Page!</title>
+  <title>Welcome to My Rad Geocities Wiki Page!</title>
   <style>
     body {
       background-image: url('bg-blue.gif');
@@ -98,10 +98,22 @@
     .footer img {
       vertical-align: middle;
     }
+
+    .filler-gifs {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .filler-gifs img {
+      width: 88px;
+      height: auto;
+    }
   </style>
 </head>
 <body>
-
   <div class="container">
     <h1>🌟 What is Wikipedia?</h1>
     <p>Wikipedia is a multi-lingual, web-based, free-content encyclopedia project. It is written collaboratively by volunteers around the world.</p>
@@ -152,28 +164,46 @@
     </div>
   </div>
 
+  <div class="filler-gifs" id="fillerGifs">
+    <!-- Filler GIFs will load here dynamically -->
+  </div>
+
   <script>
     document.getElementById("searchForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       const query = document.getElementById("searchInput").value.trim();
       if (!query) return;
 
-      const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`);
+      const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/html/${encodeURIComponent(query)}`);
       if (!res.ok) {
         document.getElementById("result").innerHTML = "<p>❌ Could not find that article.</p>";
         return;
       }
 
-      const data = await res.json();
-
-      const resultDiv = document.getElementById("result");
-      resultDiv.innerHTML = `
-        <h2>${data.title}</h2>
-        <p>${data.extract}</p>
-        ${data.thumbnail ? `<img src="${data.thumbnail.source}" style="float:right; margin:10px;" width="150">` : ''}
-      `;
+      const text = await res.text();
+      document.getElementById("result").innerHTML = text;
     });
-  </script>
 
+    async function loadFillerGifs() {
+      const keywords = ["alien", "neon", "dancing", "internet", "cool", "awesome", "funny", "meme", "windows 95", "windows 98", "construction", "wikipedia"];
+      const random = keywords[Math.floor(Math.random() * keywords.length)];
+      try {
+        const res = await fetch(`https://gifcities.org/search?q=${random}&offset=0&page_size=200`);
+        const html = await res.text();
+        const matches = Array.from(html.matchAll(/img src=\"(\/assets\/[^\"]+)\"/g)).map(m => m[1]);
+        const container = document.getElementById("fillerGifs");
+        matches.slice(0, 10).forEach(path => {
+          const img = document.createElement("img");
+          img.src = `https://gifcities.org${path}`;
+          img.alt = "GIF";
+          container.appendChild(img);
+        });
+      } catch (e) {
+        console.warn("Could not load GIFs from gifcities.org", e);
+      }
+    }
+
+    loadFillerGifs();
+  </script>
 </body>
 </html>
