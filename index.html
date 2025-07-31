@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GeoWiki with geocities.live</title>
+  <style>
+    body {
+      background-color: #ffcc99;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      text-align: center;
+    }
+    h1 {
+      color: #ff0000;
+      text-shadow: 2px 2px yellow;
+    }
+    marquee {
+      font-size: 24px;
+      color: blue;
+      margin-bottom: 20px;
+    }
+    .search-box {
+      margin-top: 30px;
+    }
+    input[type="text"] {
+      font-size: 18px;
+      padding: 5px;
+      width: 300px;
+    }
+    button {
+      font-size: 18px;
+      padding: 5px 15px;
+      background-color: #ff6600;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    iframe {
+      margin-top: 20px;
+      border: 5px dashed magenta;
+      width: 90%;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌐 Welcome to GeoWiki! 🌐</h1>
+  <marquee>~*~ Experience Wikipedia in full '90s glory! ~*~</marquee>
+
+  <div class="search-box">
+    <form id="geoForm">
+      <input type="text" id="query" placeholder="Search Wikipedia..." required>
+      <button type="submit">Search!</button>
+    </form>
+  </div>
+
+  <!-- Default: geocities.live Wikipedia homepage -->
+  <iframe id="result" src="https://geocities.live/wikipedia.com/" ></iframe>
+
+  <script>
+    document.getElementById('geoForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const query = document.getElementById('query').value.trim();
+      if (query) {
+        // Replace spaces with underscores to match wiki URL format
+        const page = query.replace(/ /g, '_');
+        const url = 'https://geocities.live/wikipedia.com/wiki/' + encodeURIComponent(page);
+        document.getElementById('result').src = url;
+      }
+    });
+  </script>
+</body>
+</html>
