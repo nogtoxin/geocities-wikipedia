@@ -1,118 +1,179 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>GeoWiki AI</title>
+  <title>GeoWiki!</title>
   <style>
     body {
-      background-color: #ffcc99;
-      font-family: "Comic Sans MS", cursive;
-      color: #0000cc;
-      text-align: center;
+      background-image: url('bg-blue.gif');
+      font-family: "Times New Roman", serif;
+      color: #00ffcc;
+      margin: 0;
+      padding: 0;
     }
 
-    h1 {
-      color: red;
-      text-shadow: 2px 2px yellow;
-      font-size: 36px;
+    .container {
+      background-color: #111;
+      border: 3px solid lime;
+      margin: 20px;
+      padding: 20px;
+      background-image: url('stars.gif');
+    }
+
+    h1, h2 {
+      color: aqua;
+      text-shadow: 1px 1px 2px yellow;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    td, th {
+      border: 1px solid lime;
+      padding: 8px;
     }
 
     .search-box {
-      margin-top: 20px;
+      margin-top: 30px;
     }
 
-    input {
+    input, button {
+      font-family: "Times New Roman", serif;
       padding: 10px;
-      width: 300px;
-      font-size: 18px;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #ff6600;
-      color: white;
-      border: none;
-      cursor: pointer;
+      font-size: 16px;
+      margin-right: 10px;
     }
 
     #result {
-      margin-top: 30px;
-      padding: 20px;
-      border: 5px dashed magenta;
-      background: #ffffcc;
-      text-align: left;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
+      margin-top: 20px;
+      background-color: #222;
+      padding: 15px;
+      border: 2px dashed magenta;
+      color: white;
     }
 
-    .retro {
-      background: url('https://www.animatedimages.org/data/media/489/animated-background-image-0075.gif');
-      background-repeat: repeat;
-      font-family: "Comic Sans MS", cursive;
-      color: blue;
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      color: white;
+      background: black;
+      padding: 10px;
+      font-size: 14px;
     }
 
-    blink {
-      animation: blink-animation 1s steps(5, start) infinite;
-      -webkit-animation: blink-animation 1s steps(5, start) infinite;
+    .gif-box {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    @keyframes blink-animation {
+    .gif-box img {
+      height: 60px;
+    }
+
+    .blink {
+      animation: blink 1s steps(2, start) infinite;
+      color: red;
+      font-weight: bold;
+    }
+
+    @keyframes blink {
       to {
         visibility: hidden;
       }
     }
 
-    marquee {
-      font-size: 20px;
-      color: green;
-      margin-top: 20px;
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .footer img {
+      vertical-align: middle;
     }
   </style>
 </head>
 <body>
-  <h1>💾 Welcome to GeoWiki-AI! 💾</h1>
-  <marquee>~*~ Your personal AI-powered trip back to 1999 ~*~</marquee>
 
-  <div class="search-box">
-    <form id="searchForm">
-      <input type="text" id="searchInput" placeholder="Search Wikipedia..." required>
-      <button type="submit">Search</button>
-    </form>
+  <div class="container">
+    <h1>🌟 What is Wikipedia?</h1>
+    <p>Wikipedia is a multi-lingual, web-based, free-content encyclopedia project. It is written collaboratively by volunteers around the world.</p>
+
+    <h2>📊 Language Stats!</h2>
+    <table>
+      <tr><th>Language</th><th>Articles</th></tr>
+      <tr><td>English</td><td>6,974,000+</td></tr>
+      <tr><td>日本語</td><td>1,457,000+</td></tr>
+      <tr><td>Русский</td><td>2,036,000+</td></tr>
+      <tr><td>Deutsch</td><td>3,001,000+</td></tr>
+      <tr><td>Español</td><td>2,021,000+</td></tr>
+    </table>
+
+    <div class="search-box">
+      <h2>🔎 Search Wikipedia</h2>
+      <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Search...">
+        <button type="submit">Search!</button>
+      </form>
+    </div>
+
+    <div id="result">
+      <p>Type something above and click Search!</p>
+    </div>
+
+    <div class="gif-box">
+      <div>
+        <span class="blink">🚧 Under Construction</span>
+        <img src="construction.gif" alt="Under Construction">
+      </div>
+      <img src="guestbook.gif" alt="Guestbook">
+      <img src="emailme.gif" alt="Email Me">
+      <img src="award.gif" alt="Award">
+    </div>
   </div>
 
-  <div id="result" class="retro">
-    <p><blink>Welcome!</blink> Use the search bar above to view Wikipedia pages in glorious 90s style.</p>
+  <div class="footer">
+    <div class="footer-row">
+      <span>© 1999 - 2025 My Awesome GeoWiki Page!</span>
+      <img src="earth.gif" alt="Earth" height="30">
+    </div>
+    <div class="footer-row">
+      <img src="ie_logo.gif" alt="IE" height="30">
+      <span>Best viewed in Netscape Navigator™</span>
+      <img src="netscape.gif" alt="Netscape" height="30">
+      <img src="campaignagainstframes.gif" alt="Campaign Against Frames" height="30">
+    </div>
   </div>
 
   <script>
-    document.getElementById("searchForm").addEventListener("submit", function(e) {
+    document.getElementById("searchForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       const query = document.getElementById("searchInput").value.trim();
       if (!query) return;
 
-      const apiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+      const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`);
+      if (!res.ok) {
+        document.getElementById("result").innerHTML = "<p>❌ Could not find that article.</p>";
+        return;
+      }
 
-      fetch(apiUrl)
-        .then(res => {
-          if (!res.ok) throw new Error("Page not found");
-          return res.json();
-        })
-        .then(data => {
-          const result = document.getElementById("result");
-          result.innerHTML = `
-            <h2>${data.title}</h2>
-            <p>${data.extract}</p>
-            ${data.thumbnail ? `<img src="${data.thumbnail.source}" style="float:right; margin:10px;">` : ''}
-            <p><a href="https://en.wikipedia.org/wiki/${encodeURIComponent(data.title)}" target="_blank">Read full article</a></p>
-            <marquee>~*~ Article loaded by AI magic ~*~</marquee>
-          `;
-        })
-        .catch(err => {
-          document.getElementById("result").innerHTML = `<p>🚫 Could not find that article.</p>`;
-        });
+      const data = await res.json();
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = `
+        <h2>${data.title}</h2>
+        <p>${data.extract}</p>
+        ${data.thumbnail ? `<img src="${data.thumbnail.source}" style="float:right; margin:10px;" width="150">` : ''}
+      `;
     });
   </script>
+
 </body>
 </html>
