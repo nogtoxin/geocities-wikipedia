@@ -164,18 +164,16 @@
     </div>
   </div>
 
-  <div class="filler-gifs">
-    <!-- Will load random gifcities iframe -->
-  </div>
+  <div class="filler-gifs"></div>
 
-      <img src="campaignagainstframes.gif" alt="Campaign Against Frames" height="
   <script>
     document.getElementById("searchForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       const query = document.getElementById("searchInput").value.trim();
       if (!query) return;
 
-      const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/html/${encodeURIComponent(query)}`);
+      const proxy = "https://corsproxy.io/?";
+      const res = await fetch(`${proxy}https://en.wikipedia.org/api/rest_v1/page/html/${encodeURIComponent(query)}`);
       if (!res.ok) {
         document.getElementById("result").innerHTML = "<p>❌ Could not find that article.</p>";
         return;
@@ -185,15 +183,26 @@
       document.getElementById("result").innerHTML = text;
     });
 
-    const keywords = ["alien", "neon", "dancing", "internet", "cool", "awesome", "funny", "meme", "windows 95", "windows 98", "construction", "wikipedia"];
-    const random = keywords[Math.floor(Math.random() * keywords.length)];
-    const iframe = document.createElement("iframe");
-    iframe.src = `https://gifcities.org/search?q=${random}&offset=0&page_size=12`;
-    iframe.width = "100%";
-    iframe.height = "600";
-    iframe.style.border = "none";
-    iframe.style.background = "black";
-    document.querySelector(".filler-gifs").appendChild(iframe);
+    async function loadGifCities() {
+      const keywords = ["alien", "neon", "dancing", "internet", "cool", "awesome", "funny", "meme", "windows 95", "windows 98", "construction", "wikipedia"];
+      const random = keywords[Math.floor(Math.random() * keywords.length)];
+      const proxy = "https://corsproxy.io/?";
+      const url = `${proxy}https://gifcities.org/search?q=${encodeURIComponent(random)}&offset=0&page_size=200`;
+      const res = await fetch(url);
+      const html = await res.text();
+      const matches = [...html.matchAll(/src=\"(\/cache\/gif\/.*?)\"/g)].map(m => m[1]);
+      const uniqueGifs = Array.from(new Set(matches)).slice(0, 20);
+
+      const gifContainer = document.querySelector(".filler-gifs");
+      uniqueGifs.forEach(gif => {
+        const img = document.createElement("img");
+        img.src = `https://gifcities.org${gif}`;
+        img.alt = "gifcities gif";
+        gifContainer.appendChild(img);
+      });
+    }
+
+    loadGifCities();
   </script>
 </body>
 </html>
