@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Welcome to My Rad Geocities Wiki Page!</title>
+  <title>GeoWiki!</title>
   <style>
     body {
       background-image: url('bg-blue.gif');
@@ -116,7 +116,7 @@
 <body>
   <div class="container">
     <h1>🌟 What is Wikipedia?</h1>
-    <p>Wikipedia is a multi-lingual, web-based, free-content encyclopedia project. It is written collaboratively by volunteers around the world.</p>
+    <p>Wikipedia is a multilingual free online encyclopedia written and maintained by a community of volunteers through open collaboration and a wiki-based editing system. It is the largest and most-read reference work in history. It is consistently one of the 10 most popular websites ranked by Similarweb and formerly Alexa; as of 2023, Wikipedia was ranked the 5th most popular site in the world. Founded by Jimmy Wales and Larry Sanger on January 15, 2001, Wikipedia is hosted by the Wikimedia Foundation, an American non-profit organization that also hosts other free-knowledge projects.</p>
 
     <h2>📊 Language Stats!</h2>
     <table>
@@ -164,10 +164,11 @@
     </div>
   </div>
 
-  <div class="filler-gifs" id="fillerGifs">
-    <!-- Filler GIFs will load here dynamically -->
+  <div class="filler-gifs">
+    <!-- Will load random gifcities iframe -->
   </div>
 
+      <img src="campaignagainstframes.gif" alt="Campaign Against Frames" height="
   <script>
     document.getElementById("searchForm").addEventListener("submit", async function(e) {
       e.preventDefault();
@@ -184,26 +185,15 @@
       document.getElementById("result").innerHTML = text;
     });
 
-    async function loadFillerGifs() {
-      const keywords = ["alien", "neon", "dancing", "internet", "cool", "awesome", "funny", "meme", "windows 95", "windows 98", "construction", "wikipedia"];
-      const random = keywords[Math.floor(Math.random() * keywords.length)];
-      try {
-        const res = await fetch(`https://gifcities.org/search?q=${random}&offset=0&page_size=200`);
-        const html = await res.text();
-        const matches = Array.from(html.matchAll(/img src=\"(\/assets\/[^\"]+)\"/g)).map(m => m[1]);
-        const container = document.getElementById("fillerGifs");
-        matches.slice(0, 10).forEach(path => {
-          const img = document.createElement("img");
-          img.src = `https://gifcities.org${path}`;
-          img.alt = "GIF";
-          container.appendChild(img);
-        });
-      } catch (e) {
-        console.warn("Could not load GIFs from gifcities.org", e);
-      }
-    }
-
-    loadFillerGifs();
+    const keywords = ["alien", "neon", "dancing", "internet", "cool", "awesome", "funny", "meme", "windows 95", "windows 98", "construction", "wikipedia"];
+    const random = keywords[Math.floor(Math.random() * keywords.length)];
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://gifcities.org/search?q=${random}&offset=0&page_size=12`;
+    iframe.width = "100%";
+    iframe.height = "600";
+    iframe.style.border = "none";
+    iframe.style.background = "black";
+    document.querySelector(".filler-gifs").appendChild(iframe);
   </script>
 </body>
 </html>
