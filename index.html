@@ -1,70 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>GeoWiki with geocities.live</title>
+  <title>GeoWiki AI</title>
   <style>
     body {
       background-color: #ffcc99;
-      font-family: "Comic Sans MS", cursive, sans-serif;
+      font-family: "Comic Sans MS", cursive;
+      color: #0000cc;
       text-align: center;
     }
+
     h1 {
-      color: #ff0000;
+      color: red;
       text-shadow: 2px 2px yellow;
+      font-size: 36px;
     }
-    marquee {
-      font-size: 24px;
-      color: blue;
-      margin-bottom: 20px;
-    }
+
     .search-box {
-      margin-top: 30px;
+      margin-top: 20px;
     }
-    input[type="text"] {
-      font-size: 18px;
-      padding: 5px;
+
+    input {
+      padding: 10px;
       width: 300px;
-    }
-    button {
       font-size: 18px;
-      padding: 5px 15px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
       background-color: #ff6600;
-      border: none;
       color: white;
+      border: none;
       cursor: pointer;
     }
-    iframe {
-      margin-top: 20px;
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
       border: 5px dashed magenta;
-      width: 90%;
-      height: 600px;
+      background: #ffffcc;
+      text-align: left;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .retro {
+      background: url('https://www.animatedimages.org/data/media/489/animated-background-image-0075.gif');
+      background-repeat: repeat;
+      font-family: "Comic Sans MS", cursive;
+      color: blue;
+    }
+
+    blink {
+      animation: blink-animation 1s steps(5, start) infinite;
+      -webkit-animation: blink-animation 1s steps(5, start) infinite;
+    }
+
+    @keyframes blink-animation {
+      to {
+        visibility: hidden;
+      }
+    }
+
+    marquee {
+      font-size: 20px;
+      color: green;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>🌐 Welcome to GeoWiki! 🌐</h1>
-  <marquee>~*~ Experience Wikipedia in full '90s glory! ~*~</marquee>
+  <h1>💾 Welcome to GeoWiki-AI! 💾</h1>
+  <marquee>~*~ Your personal AI-powered trip back to 1999 ~*~</marquee>
 
   <div class="search-box">
-    <form id="geoForm">
-      <input type="text" id="query" placeholder="Search Wikipedia..." required>
-      <button type="submit">Search!</button>
+    <form id="searchForm">
+      <input type="text" id="searchInput" placeholder="Search Wikipedia..." required>
+      <button type="submit">Search</button>
     </form>
   </div>
 
-  <!-- Default: geocities.live Wikipedia homepage -->
-  <iframe id="result" src="https://geocities.live/wikipedia.com/" ></iframe>
+  <div id="result" class="retro">
+    <p><blink>Welcome!</blink> Use the search bar above to view Wikipedia pages in glorious 90s style.</p>
+  </div>
 
   <script>
-    document.getElementById('geoForm').addEventListener('submit', function(e) {
+    document.getElementById("searchForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      const query = document.getElementById('query').value.trim();
-      if (query) {
-        // Replace spaces with underscores to match wiki URL format
-        const page = query.replace(/ /g, '_');
-        const url = 'https://geocities.live/wikipedia.com/wiki/' + encodeURIComponent(page);
-        document.getElementById('result').src = url;
-      }
+      const query = document.getElementById("searchInput").value.trim();
+      if (!query) return;
+
+      const apiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`;
+
+      fetch(apiUrl)
+        .then(res => {
+          if (!res.ok) throw new Error("Page not found");
+          return res.json();
+        })
+        .then(data => {
+          const result = document.getElementById("result");
+          result.innerHTML = `
+            <h2>${data.title}</h2>
+            <p>${data.extract}</p>
+            ${data.thumbnail ? `<img src="${data.thumbnail.source}" style="float:right; margin:10px;">` : ''}
+            <p><a href="https://en.wikipedia.org/wiki/${encodeURIComponent(data.title)}" target="_blank">Read full article</a></p>
+            <marquee>~*~ Article loaded by AI magic ~*~</marquee>
+          `;
+        })
+        .catch(err => {
+          document.getElementById("result").innerHTML = `<p>🚫 Could not find that article.</p>`;
+        });
     });
   </script>
 </body>
